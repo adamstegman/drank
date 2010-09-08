@@ -16,4 +16,12 @@ class PeopleController < ApplicationController
     person.save!
     redirect_to root_path
   end
+  
+  # PUT /people/1/reset_drank
+  def reset_drank
+    person = Person.find(params[:id])
+    person.drank = 0
+    person.save!
+    redirect_to root_path
+  end
 end

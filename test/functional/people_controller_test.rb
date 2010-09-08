@@ -27,4 +27,11 @@ class PeopleControllerTest < ActionController::TestCase
     put :add_drink, :id => person
     assert_equal drank + 1, Person.find(person).drank
   end
+  
+  # reset_drank tests
+  test "should reset drank to 0" do
+    person = Person.create(:name => "Adam")
+    put :reset_drank, :id => person
+    assert_equal 0, Person.find(person).drank
+  end
 end
