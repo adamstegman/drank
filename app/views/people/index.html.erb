@@ -1,0 +1,18 @@
+<h1>Drank</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Drank</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @people.each do |person| %>
+  <tr>
+    <td><%= person.name %></td>
+    <td><%= person.drank %></td>
+  </tr>
+<% end %>
+</table>
