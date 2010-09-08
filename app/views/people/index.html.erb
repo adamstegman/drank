@@ -5,14 +5,17 @@
     <th>Name</th>
     <th>Drank</th>
     <th></th>
-    <th></th>
-    <th></th>
   </tr>
 
 <% @people.each do |person| %>
   <tr>
     <td><%= person.name %></td>
     <td><%= person.drank %></td>
+    <td>
+      <%= form_tag add_drink_person_path(person), :method => :put do |f| -%>
+        <%= submit_tag "Drank" %>
+      <%- end -%>
+    </td>
   </tr>
 <% end %>
 </table>
