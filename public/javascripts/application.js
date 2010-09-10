@@ -35,6 +35,6 @@ function updateCounts(people_string) {
 }
 
 // Refresh the data once, setting the timer for it to go off indefinitely.
-if (JSON and JSON.parse) {
+if (JSON && JSON.parse) {
   requestFreshData(updateCounts);
 }
