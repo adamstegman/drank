@@ -14,6 +14,13 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal Person.all, assigns(:people)
   end
   
+  test "should respond with JSON array" do
+    Person.create(:name => "Adam", :drank => 1)
+    Person.create(:name => "Aubrey", :drank => 2)
+    get :index, :format => 'json'
+    assert_equal ActiveSupport::JSON.encode(Person.all), @response.body
+  end
+  
   # add_drink tests
   test "should add drink if drank is nil" do
     person = Person.create(:name => "Adam")
