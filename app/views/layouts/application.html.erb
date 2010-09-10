@@ -3,13 +3,16 @@
 <head>
   <title>Water Wars</title>
   <%= csrf_meta_tag %>
-  <meta name="viewport" content="width=300" />
+  <meta name="viewport" content="width=320" />
   <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/images/icon.gif" />
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
 </head>
 <body>
-<%= yield %>
+  <h1><span class="centered">Water Wars</span></h1>
+  <div class="content centered">
+    <%= yield %>
+  </div>
 </body>
 </html>
