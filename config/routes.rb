@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 Drank::Application.routes.draw do
   resources :people, :only => [:index] do
     member do

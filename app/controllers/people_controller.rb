@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 class PeopleController < ApplicationController
   NEW_DAY_HOUR = 4
   
