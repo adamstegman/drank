@@ -1,7 +1,7 @@
 Drank::Application.routes.draw do
   resources :people, :only => [:index] do
     member do
-      put :add_drink, :reset_drank
+      put :add_drink
     end
   end
 

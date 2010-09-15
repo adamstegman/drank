@@ -1,4 +1,8 @@
 class PeopleController < ApplicationController
+  NEW_DAY_HOUR = 4
+  
+  before_filter :reset_drank_if_new_day
+  
   # GET /people
   def index
     @people = Person.order('people.name DESC')
@@ -22,11 +26,20 @@ class PeopleController < ApplicationController
     end
   end
   
-  # PUT /people/1/reset_drank
-  def reset_drank
-    person = Person.find(params[:id])
-    person.drank = 0
-    person.save!
-    redirect_to root_path
+  private
+  
+  # Reset drank counts if this is a new day.
+  def reset_drank_if_new_day
+    people = Person.all
+    return if people.empty?
+    if Time.now.hour >= NEW_DAY_HOUR
+      last_updated = people.map(&:updated_at).sort.last.getlocal
+      if last_updated.hour < NEW_DAY_HOUR or last_updated.day < Time.now.day
+        people.each do |person|
+          person.drank = 0
+          person.save!
+        end
+      end
+    end
   end
 end

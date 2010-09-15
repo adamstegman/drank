@@ -21,6 +21,29 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal ActiveSupport::JSON.encode(Person.order('people.name DESC')), @response.body
   end
   
+  test "should reset drank counts if 4am and last update was before 4am for index" do
+    today = Date.today
+    Person.create(:name => "Adam", :drank => 1, :updated_at => Time.new(today.year, today.month, today.day, 3, 59, 59))
+    Person.create(:name => "Aubrey", :drank => 2, :updated_at => Time.new(today.year, today.month, today.day, 3, 59, 59))
+    Time.instance_eval do
+      alias :normal_now :now
+      def today=(today)
+        @today = today
+      end
+      def now
+        Time.new(@today.year, @today.month, @today.day, 4, 0, 0)
+      end
+    end
+    Time.today = today
+    get :index
+    Person.all.each {|person| assert_equal 0, person.drank}
+    Time.instance_eval do
+      alias :now :normal_now
+      undef :normal_now
+      undef :today=
+    end
+  end
+  
   # add_drink tests
   test "should add drink if drank is nil" do
     add = 4
@@ -55,10 +78,32 @@ class PeopleControllerTest < ActionController::TestCase
     assert_equal "You need to specify oz drank.", flash[:alert]
   end
   
-  # reset_drank tests
-  test "should reset drank to 0" do
-    person = Person.create(:name => "Adam")
-    put :reset_drank, :id => person
-    assert_equal 0, Person.find(person).drank
+  test "should reset drank counts if 4am and last update was before 4am for add drink" do
+    today = Date.today
+    Person.create(:name => "Adam", :drank => 1, :updated_at => Time.new(today.year, today.month, today.day, 3, 59, 59))
+    p = Person.create(:name => "Aubrey", :drank => 2, :updated_at => Time.new(today.year, today.month, today.day, 3, 59, 59))
+    Time.instance_eval do
+      alias :normal_now :now
+      def today=(today)
+        @today = today
+      end
+      def now
+        Time.new(@today.year, @today.month, @today.day, 4, 0, 0)
+      end
+    end
+    Time.today = today
+    put :add_drink, :id => p, :oz => '1'
+    Person.all.each do |person|
+      if p == person
+        assert_equal 1, person.drank
+      else
+        assert_equal 0, person.drank
+      end
+    end
+    Time.instance_eval do
+      alias :now :normal_now
+      undef :normal_now
+      undef :today=
+    end
   end
 end

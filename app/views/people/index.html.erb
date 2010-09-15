@@ -4,7 +4,6 @@
     <th>Drank</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @people.each do |person| %>
@@ -21,11 +20,6 @@
       <%= form_tag add_drink_person_path(person), :method => :put do |f| -%>
         <%= hidden_field_tag :oz, '16' %>
         <%= submit_tag "16 oz." %>
-      <%- end -%>
-    </td>
-    <td>
-      <%= form_tag reset_drank_person_path(person), :method => :put do |f| -%>
-        <%= submit_tag "Reset" %>
       <%- end -%>
     </td>
   </tr>
