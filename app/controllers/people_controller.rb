@@ -1,7 +1,7 @@
 class PeopleController < ApplicationController
   # GET /people
   def index
-    @people = Person.all
+    @people = Person.order('people.name DESC')
 
     respond_to do |format|
       format.html # index.html.erb
