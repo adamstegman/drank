@@ -30,7 +30,7 @@ function updateCounts(people_string) {
     while (cell.hasChildNodes()) {
       cell.removeChild(cell.lastChild);
     }
-    cell.appendChild(document.createTextNode(person.drank));
+    cell.appendChild(document.createTextNode(person.drank + ' oz.'));
   }
 }
 

@@ -23,16 +23,36 @@ class PeopleControllerTest < ActionController::TestCase
   
   # add_drink tests
   test "should add drink if drank is nil" do
+    add = 4
     person = Person.create(:name => "Adam")
-    put :add_drink, :id => person
-    assert_equal 1, Person.find(person).drank
+    put :add_drink, :id => person, :oz => add.to_s
+    assert_equal add, Person.find(person).drank
   end
   
   test "should add drink to existing drank" do
     drank = 1
+    add = 3
     person = Person.create(:name => "Adam", :drank => drank)
+    put :add_drink, :id => person, :oz => add.to_s
+    assert_equal drank + add, Person.find(person).drank
+  end
+  
+  test "should redirect to root after adding drink" do
+    person = Person.create(:name => "Adam")
+    put :add_drink, :id => person, :oz => '1'
+    assert_redirected_to root_path
+  end
+  
+  test "should redirect to root if add drink failed" do
+    person = Person.create(:name => "Adam")
     put :add_drink, :id => person
-    assert_equal drank + 1, Person.find(person).drank
+    assert_redirected_to root_path
+  end
+  
+  test "should set flash alert if add drink failed" do
+    person = Person.create(:name => "Adam")
+    put :add_drink, :id => person
+    assert_equal "You need to specify oz drank.", flash[:alert]
   end
   
   # reset_drank tests

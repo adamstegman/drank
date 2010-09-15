@@ -11,11 +11,15 @@ class PeopleController < ApplicationController
   
   # PUT /people/1/add_drink
   def add_drink
-    person = Person.find(params[:id])
-    drank = person.drank || 0
-    person.drank = drank + 1
-    person.save!
-    redirect_to root_path
+    if params[:oz]
+      person = Person.find(params[:id])
+      drank = person.drank || 0
+      person.drank = drank + params[:oz].to_i
+      person.save!
+      redirect_to root_path
+    else
+      redirect_to root_path, :alert => "You need to specify oz drank."
+    end
   end
   
   # PUT /people/1/reset_drank
