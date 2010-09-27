@@ -21,6 +21,7 @@ class PersonTest < ActiveSupport::TestCase
   test "should return the amount of this persons drinks today" do
     adam = Person.find_or_create_by_name('Adam')
     today = Date.today
+    new_day_hour = Drink.new_day_hour
     
     # mock Time.now
     Time.instance_eval do
@@ -28,18 +29,23 @@ class PersonTest < ActiveSupport::TestCase
         @today = today
       end
       
+      def new_day_hour=(hour)
+        @new_day_hour = hour
+      end
+      
       alias :old_now :now
       def now
-        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
+        Time.local(@today.year, @today.month, @today.day, @new_day_hour, 0, 0)
       end
     end
     Time.today = today
+    Time.new_day_hour = new_day_hour
     
     y = Drink.new(:amount => 1, :person => adam,
-                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day, new_day_hour - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person => adam,
-                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day, new_day_hour, 0, 0))
     t.save!
     
     drank = adam.drank
@@ -49,6 +55,7 @@ class PersonTest < ActiveSupport::TestCase
       alias :now :old_now
       undef :old_now
       undef :today=
+      undef :new_day_hour=
     end
     
     assert_equal t.amount, drank
