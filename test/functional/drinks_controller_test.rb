@@ -7,21 +7,55 @@ class DrinksControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:drinks)
   end
-
-  # new tests
-  test "should get new" do
-    get :new
-    assert_response :success
+  
+  test "should get drinks from today for index" do
+    Person.find_or_create_by_name('Adam')
+    today = Date.today
+    
+    # mock Time.now
+    Time.instance_eval do
+      def today=(today)
+        @today = today
+      end
+      
+      alias :old_now :now
+      def now
+        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
+      end
+    end
+    Time.today = today
+    
+    y = Drink.new(:amount => 1, :person_id => Person.first.id,
+                  :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR - 1, 59, 59))
+    y.save!
+    t = Drink.new(:amount => 1, :person_id => Person.first.id,
+                  :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 0))
+    t.save!
+    
+    get :index
+    
+    # unmock Time.now
+    Time.instance_eval do
+      alias :now :old_now
+      undef :old_now
+      undef :today=
+    end
+    
+    assert_equal [t], assigns(:drinks)
   end
 
   # create tests
   test "should create drink" do
+    Person.find_or_create_by_name('Adam')
     assert_difference('Drink.count') do
-      post :create, :drink => @drink.attributes
+      post :create, :drink => {:person_id => Person.first.to_param, :amount => "1"}
     end
-
-    assert_redirected_to drink_path(assigns(:drink))
+  end
+  
+  test "should redirect to root after creating drink" do
+    Person.find_or_create_by_name('Adam')
+    post :create, :drink => {:person_id => Person.first.to_param, :amount => "1"}
+    assert_redirected_to root_path
   end
 end

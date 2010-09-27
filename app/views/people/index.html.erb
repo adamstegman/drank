@@ -12,14 +12,16 @@
     <td><%= person.name %></td>
     <td id="drank-<%= person.id %>"><%= person.drank %> oz.</td>
     <td>
-      <%= form_tag add_drink_person_path(person), :method => :put do |f| -%>
-        <%= hidden_field_tag :oz, '8' %>
+      <%= form_for Drink.new(:person => person, :amount => 8) do |f| %>
+        <%= f.hidden_field :person_id %>
+        <%= f.hidden_field :amount %>
         <%= submit_tag "8 oz." %>
       <%- end -%>
     </td>
     <td>
-      <%= form_tag add_drink_person_path(person), :method => :put do |f| -%>
-        <%= hidden_field_tag :oz, '16' %>
+      <%= form_for Drink.new(:person => person, :amount => 16) do |f| %>
+        <%= f.hidden_field :person_id %>
+        <%= f.hidden_field :amount %>
         <%= submit_tag "16 oz." %>
       <%- end -%>
     </td>
