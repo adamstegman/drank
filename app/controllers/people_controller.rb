@@ -7,7 +7,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @people }
+      format.json { render :json => @people.to_json(:methods => :drank) }
     end
   end
 end

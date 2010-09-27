@@ -17,9 +17,9 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should respond with JSON array" do
-    Person.create(:name => "Adam", :drank => 1)
-    Person.create(:name => "Aubrey", :drank => 2)
+    Person.create(:name => "Adam")
+    Person.create(:name => "Aubrey")
     get :index, :format => 'json'
-    assert_equal ActiveSupport::JSON.encode(Person.order('people.name DESC')), @response.body
+    assert_equal Person.order('people.name DESC').to_json(:methods => :drank), @response.body
   end
 end
