@@ -37,7 +37,8 @@ class DrinkTest < ActiveSupport::TestCase
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
                   :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
-    assert_equal [t], Drink.today
+    
+    todays_drinks = Drink.today
     
     # unmock Time.now
     Time.instance_eval do
@@ -45,6 +46,8 @@ class DrinkTest < ActiveSupport::TestCase
       undef :old_now
       undef :today=
     end
+    
+    assert_equal [t], todays_drinks
   end
   
   test "should return drinks from yesterday if now is before new day hour" do
@@ -70,7 +73,8 @@ class DrinkTest < ActiveSupport::TestCase
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
                   :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
-    assert_equal [t], Drink.today
+    
+    todays_drinks = Drink.today
     
     # unmock Time.now
     Time.instance_eval do
@@ -78,5 +82,7 @@ class DrinkTest < ActiveSupport::TestCase
       undef :old_now
       undef :today=
     end
+    
+    assert_equal [t], todays_drinks
   end
 end
