@@ -7,7 +7,7 @@
 # === Required
 # amount:: The number of ounces of water drank.
 # == Relationships
-# Person:: The Person who made this drink.
+# Person:: belongs_to - The Person who made this drink.
 class Drink < ActiveRecord::Base
   # == Constants
   NEW_DAY_HOUR = 4
