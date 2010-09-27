@@ -5,11 +5,17 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
 class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
-  fixtures :all
-
-  # Add more helper methods to be used by all tests here...
+  ActiveRecord::Base.class_eval do
+    # Returns true if setting +attribute+ to +nil+ generates an error.
+    #
+    # @param [Symbol] attribute the name of the attribute to test if it is
+    #                           required.
+    # @return [Boolean] true if +attribute+ is required.
+    def requires?(attribute)
+      record = self.class.new
+      record.send "#{attribute}=", nil
+      record.valid?
+      record.errors[attribute].any?
+    end
+  end
 end
