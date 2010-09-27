@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 class CreateDrinks < ActiveRecord::Migration
   def self.up
     create_table :drinks do |t|
