@@ -1,0 +1,28 @@
+<%-# coding: UTF-8 -%>
+<table class="centered">
+  <tr>
+    <th>Name</th>
+    <th>Drank</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @people.each do |person| %>
+  <tr>
+    <td><%= person.name %></td>
+    <td id="drank-<%= person.id %>"><%= person.drank %> oz.</td>
+    <td>
+      <%= form_tag add_drink_person_path(person), :method => :put do |f| -%>
+        <%= hidden_field_tag :oz, '8' %>
+        <%= submit_tag "8 oz." %>
+      <%- end -%>
+    </td>
+    <td>
+      <%= form_tag add_drink_person_path(person), :method => :put do |f| -%>
+        <%= hidden_field_tag :oz, '16' %>
+        <%= submit_tag "16 oz." %>
+      <%- end -%>
+    </td>
+  </tr>
+<% end %>
+</table>

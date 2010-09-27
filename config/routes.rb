@@ -6,6 +6,7 @@ Drank::Application.routes.draw do
       put :add_drink
     end
   end
+  resources :drinks, :only => [:index, :new, :create]
 
   root :to => 'people#index'
 end
