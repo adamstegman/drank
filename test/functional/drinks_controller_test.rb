@@ -21,16 +21,16 @@ class DrinksControllerTest < ActionController::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
       end
     end
     Time.today = today
     
     y = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
     
     get :index
@@ -57,19 +57,19 @@ class DrinksControllerTest < ActionController::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
       end
     end
     Time.today = today
     
     y = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t2 = Drink.new(:amount => 1, :person_id => Person.first.id,
-                   :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 1))
+                   :created_at => Time.gm(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 1))
     t2.save!
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day - 1, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
     
     get :index

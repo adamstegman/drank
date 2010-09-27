@@ -30,16 +30,16 @@ class PersonTest < ActiveSupport::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
       end
     end
     Time.today = today
     
     y = Drink.new(:amount => 1, :person => adam,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person => adam,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
     
     drank = adam.drank

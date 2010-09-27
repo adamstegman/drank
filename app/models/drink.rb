@@ -23,11 +23,11 @@ class Drink < ActiveRecord::Base
     now = Time.now
     cutoff = now - now.wday.days
     # Get last week's drinks if it's not yet what we consider a new week
-    if cutoff.hour < NEW_DAY_HOUR and cutoff.sunday?
+    if cutoff.hour < NEW_DAY_HOUR and cutoff.wday == 0
       cutoff = cutoff - 7.days
     end
     # The cutoff is the hour of the day when we consider the day started
-    cutoff = Time.new(cutoff.year, cutoff.month, cutoff.day, Drink::NEW_DAY_HOUR, 0, 0)
+    cutoff = Time.gm(cutoff.year, cutoff.month, cutoff.day, Drink::NEW_DAY_HOUR, 0, 0)
     
     where("drinks.created_at >= ?", cutoff)
   }
@@ -39,7 +39,7 @@ class Drink < ActiveRecord::Base
       now = now - 1.day
     end
     # The cutoff is the hour of the day when we consider the day started
-    cutoff = Time.new(now.year, now.month, now.day, Drink::NEW_DAY_HOUR, 0, 0)
+    cutoff = Time.gm(now.year, now.month, now.day, Drink::NEW_DAY_HOUR, 0, 0)
     
     where("drinks.created_at >= ?", cutoff)
   }

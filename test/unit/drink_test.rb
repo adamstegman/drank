@@ -27,16 +27,16 @@ class DrinkTest < ActiveSupport::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
       end
     end
     Time.today = today
     
     y = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
     
     this_weeks_drinks = Drink.this_week
@@ -64,17 +64,17 @@ class DrinkTest < ActiveSupport::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
       end
     end
     Time.today = today
     
     today = today - 7.days
     y = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
     
     this_weeks_drinks = Drink.this_week
@@ -102,16 +102,16 @@ class DrinkTest < ActiveSupport::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR, 0, 0)
       end
     end
     Time.today = today
     
     y = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
     
     todays_drinks = Drink.today
@@ -138,17 +138,17 @@ class DrinkTest < ActiveSupport::TestCase
       
       alias :old_now :now
       def now
-        Time.new(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
+        Time.gm(@today.year, @today.month, @today.day, Drink::NEW_DAY_HOUR - 1, 59, 59)
       end
     end
     Time.today = today
     
     today = today - 1.day
     y = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR - 1, 59, 59))
     y.save!
     t = Drink.new(:amount => 1, :person_id => Person.first.id,
-                  :created_at => Time.new(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
+                  :created_at => Time.gm(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0))
     t.save!
 
     todays_drinks = Drink.today
