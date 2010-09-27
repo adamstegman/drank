@@ -40,3 +40,7 @@ h1 span {
   text-align: center;
   width: 320px;
 }
+h1 span a {
+  color: #fff;
+  text-decoration: none;
+}
