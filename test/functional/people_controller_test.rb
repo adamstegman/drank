@@ -10,15 +10,15 @@ class PeopleControllerTest < ActionController::TestCase
   end
   
   test "should get all people with index" do
-    Person.create(:name => "Adam")
-    Person.create(:name => "Aubrey")
+    person('Adam')
+    person('Aubrey')
     get :index
     assert_equal Person.order('people.name DESC'), assigns(:people)
   end
   
   test "should respond with JSON array" do
-    Person.create(:name => "Adam")
-    Person.create(:name => "Aubrey")
+    person('Adam')
+    person('Aubrey')
     get :index, :format => 'json'
     assert_equal Person.order('people.name DESC').to_json(:methods => :drank), @response.body
   end

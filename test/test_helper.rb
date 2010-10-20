@@ -62,4 +62,9 @@ class ActiveSupport::TestCase
   def time_at_new_day(today = Date.today)
     Time.local(today.year, today.month, today.day, Drink::NEW_DAY_HOUR, 0, 0)
   end
+  
+  # == Factories
+  def person(name = 'Adam')
+    Person.find_or_create_by_name(name)
+  end
 end

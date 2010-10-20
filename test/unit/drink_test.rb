@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class DrinkTest < ActiveSupport::TestCase
+  setup :person
+  
   # amount tests
   test "should require amount" do
     assert Drink.new.requires?(:amount)
@@ -15,12 +17,11 @@ class DrinkTest < ActiveSupport::TestCase
   
   # this week scope tests
   test "should return drinks from this week if now is on or after Sunday on new day hour" do
-    Person.find_or_create_by_name('Adam')
     sunday = Date.today - Date.today.wday.days
-    y = Drink.new(:amount => 1, :person_id => Person.first.id,
+    y = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_before_new_day(sunday))
     y.save!
-    t = Drink.new(:amount => 1, :person_id => Person.first.id,
+    t = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_at_new_day(sunday))
     t.save!
     mock_time_now(time_at_new_day(sunday))
@@ -33,13 +34,12 @@ class DrinkTest < ActiveSupport::TestCase
   end
   
   test "should return drinks from last week if now is before new day hour" do
-    Person.find_or_create_by_name('Adam')
     sunday = Date.today - Date.today.wday.days
     last_sunday = sunday - 7.days
-    y = Drink.new(:amount => 1, :person_id => Person.first.id,
+    y = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_before_new_day(last_sunday))
     y.save!
-    t = Drink.new(:amount => 1, :person_id => Person.first.id,
+    t = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_at_new_day(last_sunday))
     t.save!
     mock_time_now(time_before_new_day(sunday))
@@ -53,11 +53,10 @@ class DrinkTest < ActiveSupport::TestCase
   
   # today scope tests
   test "should return drinks from today if now is on or after new day hour" do
-    Person.find_or_create_by_name('Adam')
-    y = Drink.new(:amount => 1, :person_id => Person.first.id,
+    y = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_before_new_day)
     y.save!
-    t = Drink.new(:amount => 1, :person_id => Person.first.id,
+    t = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_at_new_day)
     t.save!
     mock_time_now(time_at_new_day)
@@ -70,12 +69,11 @@ class DrinkTest < ActiveSupport::TestCase
   end
   
   test "should return drinks from yesterday if now is before new day hour" do
-    Person.find_or_create_by_name('Adam')
     yesterday = Date.today - 1.day
-    y = Drink.new(:amount => 1, :person_id => Person.first.id,
+    y = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_before_new_day(yesterday))
     y.save!
-    t = Drink.new(:amount => 1, :person_id => Person.first.id,
+    t = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_at_new_day(yesterday))
     t.save!
     mock_time_now(time_before_new_day)
