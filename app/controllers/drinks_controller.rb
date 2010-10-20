@@ -3,7 +3,32 @@
 class DrinksController < ApplicationController
   # GET /drinks
   def index
-    @drinks = Drink.from_today.order('created_at ASC')
+    # Parse time parameters if given
+    begin_time = nil
+    end_time = nil
+    begin
+      if params[:begin]
+        begin_time = Time.parse(params[:begin])
+      end
+      if params[:end]
+        end_time = Time.parse(params[:end])
+      end
+    rescue ArgumentError => ae
+      Rails.info "Bad param given: #{ae}"
+    end
+    
+    # Retrieve desired drinks
+    if begin_time and end_time
+      @drinks = Drink.drank_from(begin_time).drank_to(end_time)
+    elsif begin_time
+      @drinks = Drink.drank_from(begin_time)
+    elsif end_time
+      @drinks = Drink.drank_to(end_time)
+    else
+      # Default to today's drinks
+      @drinks = Drink.drank_from(Drink.today)
+    end
+    @drinks = @drinks.order('created_at ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -12,16 +37,12 @@ class DrinksController < ApplicationController
   
   # GET /drinks/today
   def today
-    redirect_to drinks_path
+    redirect_to drinks_path, :begin => Drink.today.to_s
   end
   
   # GET /drinks/this_week
   def this_week
-    @drinks = Drink.from_this_week.order('created_at ASC')
-
-    respond_to do |format|
-      format.html # this_week.html.erb
-    end
+    redirect_to drinks_path, :begin => Drink.this_week.to_s
   end
 
   # POST /drinks

@@ -16,10 +16,10 @@ class Person < ActiveRecord::Base
   # == Instance Methods
   
   # Returns the amount of water this Person has drank today, or 0 if no Drinks
-  # are recorded for today.
+  # are recorded for today. Today is defined as the result of Drink.today.
   #
   # @return [Integer] The sum of the Drink amounts for today.
   def drank
-    self.drinks.from_today.map(&:amount).inject(:+) || 0
+    self.drinks.drank_from(Drink.today).map(&:amount).inject(:+) || 0
   end
 end

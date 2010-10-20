@@ -19,28 +19,35 @@ class Drink < ActiveRecord::Base
   validates_presence_of :amount, :person
   
   # == Class Methods
-  scope :from_this_week, lambda {
-    now = Time.now
-    cutoff = now - now.wday.days
-    # Get last week's drinks if it's not yet what we consider a new week
-    if now.wday == 0 and now.hour < NEW_DAY_HOUR
-      cutoff = cutoff - 7.days
-    end
-    # The cutoff is the hour of the day when we consider the day started
-    cutoff = Time.local(cutoff.year, cutoff.month, cutoff.day, NEW_DAY_HOUR, 0, 0)
-    
-    where("drinks.created_at >= ?", cutoff)
-  }
+  scope :drank_from, lambda {|from| where('created_at >= ?', from)}
+  scope :drank_to, lambda {|to| where('created_at <= ?', to)}
   
-  scope :from_today, lambda {
-    now = Time.now
-    # Get yesterday's drinks if it's not yet what we consider a new day
-    if now.hour < NEW_DAY_HOUR
-      now = now - 1.day
+  class << self
+    # Returns a Time instance representing the last occurrence of
+    # NEW_DAY_HOUR.
+    #
+    # @return [Time] The last occurrence of NEW_DAY_HOUR.
+    def today
+      now = Time.now
+      # Get yesterday's drinks if it's not yet what we consider a new day
+      if now.hour < NEW_DAY_HOUR
+        now = now - 1.day
+      end
+      Time.local(now.year, now.month, now.day, NEW_DAY_HOUR, 0, 0)
     end
-    # The cutoff is the hour of the day when we consider the day started
-    cutoff = Time.local(now.year, now.month, now.day, NEW_DAY_HOUR, 0, 0)
     
-    where("drinks.created_at >= ?", cutoff)
-  }
+    # Returns a Time instance representing the last occurrence of
+    # NEW_DAY_HOUR on a Sunday.
+    #
+    # @return [Time] The last occurrence of NEW_DAY_HOUR.
+    def this_week
+      now = Time.now
+      new_week = now - now.wday.days
+      # Get last week's drinks if it's not yet what we consider a new week
+      if now.wday == 0 and now.hour < NEW_DAY_HOUR
+        new_week = new_week - 7.days
+      end
+      Time.local(new_week.year, new_week.month, new_week.day, NEW_DAY_HOUR, 0, 0)
+    end
+  end
 end

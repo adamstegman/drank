@@ -27,6 +27,70 @@ class DrinksControllerTest < ActionController::TestCase
     assert_equal [t], assigns(:drinks)
   end
   
+  test "should accept begin time and unbound end time for index" do
+    y = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_before_new_day)
+    y.save!
+    t = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_at_new_day)
+    t.save!
+    mock_time_now(time_at_new_day)
+    
+    get :index, :begin => time_before_new_day.to_s
+    
+    unmock_time_now
+    
+    assert_equal [y, t], assigns(:drinks)
+  end
+  
+  test "should accept end time and unbound begin time for index" do
+    y = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_before_new_day)
+    y.save!
+    t = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_at_new_day)
+    t.save!
+    mock_time_now(time_at_new_day)
+    
+    get :index, :end => time_at_new_day.to_s
+    
+    unmock_time_now
+    
+    assert_equal [y, t], assigns(:drinks)
+  end
+  
+  test "should accept both begin and end times for index" do
+    y = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_before_new_day)
+    y.save!
+    t = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_at_new_day)
+    t.save!
+    mock_time_now(time_before_new_day)
+    
+    get :index, :begin => time_at_new_day.to_s, :end => (time_at_new_day + 1.second).to_s
+    
+    unmock_time_now
+    
+    assert_equal [t], assigns(:drinks)
+  end
+  
+  test "should show no drinks given begin after end for index" do
+    y = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_before_new_day)
+    y.save!
+    t = Drink.new(:amount => 1, :person_id => person.id,
+                  :created_at => time_at_new_day)
+    t.save!
+    mock_time_now(time_at_new_day)
+    
+    get :index, :begin => time_at_new_day.to_s, :end => time_before_new_day.to_s
+    
+    unmock_time_now
+    
+    assert_equal [], assigns(:drinks)
+  end
+  
   test "should get drinks sorted by created at ascending" do
     y = Drink.new(:amount => 1, :person_id => person.id,
                   :created_at => time_before_new_day)
