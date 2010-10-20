@@ -20,6 +20,6 @@ class Person < ActiveRecord::Base
   #
   # @return [Integer] The sum of the Drink amounts for today.
   def drank
-    self.drinks.today.map(&:amount).inject(:+) || 0
+    self.drinks.from_today.map(&:amount).inject(:+) || 0
   end
 end

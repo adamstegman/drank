@@ -3,7 +3,7 @@
 class DrinksController < ApplicationController
   # GET /drinks
   def index
-    @drinks = Drink.today.order('created_at ASC')
+    @drinks = Drink.from_today.order('created_at ASC')
 
     respond_to do |format|
       format.html # index.html.erb

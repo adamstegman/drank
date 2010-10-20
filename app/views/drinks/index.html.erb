@@ -10,7 +10,7 @@
   <tr>
     <td><%= drink.person.name %></td>
     <td><%= drink.amount %> oz.</td>
-    <td><%=l drink.created_at.getlocal, :format => :clock %></td>
+    <td><%=l drink.created_at, :format => :clock %></td>
   </tr>
 <% end %>
 </table>
