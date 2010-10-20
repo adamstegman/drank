@@ -9,6 +9,20 @@ class DrinksController < ApplicationController
       format.html # index.html.erb
     end
   end
+  
+  # GET /drinks/today
+  def today
+    redirect_to drinks_path
+  end
+  
+  # GET /drinks/this_week
+  def this_week
+    @drinks = Drink.from_this_week.order('created_at ASC')
+
+    respond_to do |format|
+      format.html # this_week.html.erb
+    end
+  end
 
   # POST /drinks
   def create
