@@ -1,7 +1,7 @@
 <%-# coding: UTF-8 -%>
 
 <% if @totals.any? %>
-  <h2>Totals Between <%=l @begin_time, :format => :short %> and <%=l @end_time, :format => :short %></h2>
+  <h2>Totals Between <%=l @begin_time, :format => :wday_time %> and <%=l @end_time, :format => :wday_time %></h2>
   <table class="centered">
     <thead>
       <tr>
@@ -36,7 +36,7 @@
       <tr>
         <td><%= drink.person.name %></td>
         <td><%= drink.amount %> oz.</td>
-        <td><%=l drink.created_at, :format => :clock %></td>
+        <td><%=l drink.created_at, :format => :wday_time %></td>
       </tr>
     <% end %>
   </tbody>

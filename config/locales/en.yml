@@ -4,4 +4,4 @@
 en:
   time:
     formats:
-      clock: %I:%M:%S %p %Z
+      wday_time: %a %m/%d %I:%M
