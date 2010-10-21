@@ -16,7 +16,17 @@ th, td {
   padding: 0.5em;
 }
 .content {
-  width: 320px;
+  width: 960px;
+}
+@media screen and (max-width: 980px) {
+  .content {
+    width: 640px;
+  }
+}
+@media screen and (max-width: 660px) {
+  .content {
+    width: 320px;
+  }
 }
 
 /* Global */
