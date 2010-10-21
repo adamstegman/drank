@@ -1,18 +1,45 @@
 <%-# coding: UTF-8 -%>
-<table class="centered">
-  <tr>
-    <th>Name</th>
-    <th>Drank</th>
-    <th>Time</th>
-  </tr>
 
-<% @drinks.each do |drink| %>
-  <tr>
-    <td><%= drink.person.name %></td>
-    <td><%= drink.amount %> oz.</td>
-    <td><%=l drink.created_at, :format => :clock %></td>
-  </tr>
+<% if @totals.any? %>
+  <h2>Totals Between <%=l @begin_time, :format => :short %> and <%=l @end_time, :format => :short %></h2>
+  <table class="centered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Total Drank</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <% @totals.each do |total| %>
+        <tr>
+          <td><%= total[:person].name %></td>
+          <td><%= total[:amount] %> oz.</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>
+
+<h2>Drinks</h2>
+<table class="centered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Drank</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @drinks.each do |drink| %>
+      <tr>
+        <td><%= drink.person.name %></td>
+        <td><%= drink.amount %> oz.</td>
+        <td><%=l drink.created_at, :format => :clock %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
 <p><%= link_to "Home", root_path %></p>

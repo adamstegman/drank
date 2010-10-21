@@ -4,31 +4,40 @@ class DrinksController < ApplicationController
   # GET /drinks
   def index
     # Parse time parameters if given
-    begin_time = nil
-    end_time = nil
+    @begin_time = nil
+    @end_time = nil
     begin
       if params[:begin]
-        begin_time = Time.parse(params[:begin])
+        @begin_time = Time.parse(params[:begin])
       end
       if params[:end]
-        end_time = Time.parse(params[:end])
+        @end_time = Time.parse(params[:end])
       end
     rescue ArgumentError => ae
       Rails.info "Bad param given: #{ae}"
     end
     
     # Retrieve desired drinks
-    if begin_time and end_time
-      @drinks = Drink.drank_from(begin_time).drank_to(end_time)
-    elsif begin_time
-      @drinks = Drink.drank_from(begin_time)
-    elsif end_time
-      @drinks = Drink.drank_to(end_time)
-    else
-      # Default to today's drinks
-      @drinks = Drink.drank_from(Drink.today)
+    unless @begin_time
+      if @end_time
+        @begin_time = Drink.first.created_at
+      else
+        # Default to today's drinks
+        @begin_time = Drink.today
+      end
     end
-    @drinks = @drinks.order('created_at ASC')
+    unless @end_time
+      @end_time = Time.now
+    end
+    @drinks = Drink.drank_from(@begin_time).drank_to(@end_time).order('created_at ASC')
+    
+    # Sum the amounts for each person
+    @totals = {}
+    @drinks.each do |drink|
+      @totals[drink.person_id] ||= {:person => drink.person, :amount => 0}
+      @totals[drink.person_id][:amount] += drink.amount
+    end
+    @totals = @totals.values.sort {|a,b| b[:amount] <=> a[:amount]}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -37,12 +46,12 @@ class DrinksController < ApplicationController
   
   # GET /drinks/today
   def today
-    redirect_to drinks_path, :begin => Drink.today.to_s
+    redirect_to drinks_path(:begin => Drink.today.to_s)
   end
   
   # GET /drinks/this_week
   def this_week
-    redirect_to drinks_path, :begin => Drink.this_week.to_s
+    redirect_to drinks_path(:begin => Drink.this_week.to_s)
   end
 
   # POST /drinks

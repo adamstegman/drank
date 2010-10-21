@@ -60,6 +60,14 @@ class ActiveSupport::TestCase
   end
   
   # == Factories
+  def drink(attributes = {})
+    unless attributes[:person] or attributes[:person_id]
+      attributes[:person] = person
+    end
+    attributes[:amount] ||= 1
+    Drink.create(attributes)
+  end
+  
   def person(name = 'Adam')
     Person.find_or_create_by_name(name)
   end

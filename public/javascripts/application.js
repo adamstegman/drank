@@ -27,6 +27,7 @@ function updateCounts(people_string) {
   for (var i = 0, l = people.length; i < l; i++) {
     var person = people[i].person,
         cell = document.getElementById("drank-" + person.id);
+    if (!cell) return;
     while (cell.hasChildNodes()) {
       cell.removeChild(cell.lastChild);
     }
