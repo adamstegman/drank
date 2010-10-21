@@ -20,16 +20,16 @@ class PersonTest < ActiveSupport::TestCase
   
   test "should return the amount of this persons drinks today" do
     y = Drink.new(:amount => 1, :person => person,
-                  :created_at => time_before_new_day)
+                  :created_at => Time.before_new_day)
     y.save!
     t = Drink.new(:amount => 1, :person => person,
-                  :created_at => time_at_new_day)
+                  :created_at => Time.at_new_day)
     t.save!
-    mock_time_now(time_at_new_day)
+    Time.mock_now(Time.at_new_day)
     
     drank = person.drank
     
-    unmock_time_now
+    Time.unmock_now
     
     assert_equal t.amount, drank
   end
