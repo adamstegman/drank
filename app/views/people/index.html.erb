@@ -15,14 +15,14 @@
       <%= form_for Drink.new(:person => person, :amount => 8) do |f| %>
         <%= f.hidden_field :person_id %>
         <%= f.hidden_field :amount %>
-        <%= submit_tag "8 oz." %>
+        <%= submit_tag "8 oz.", :class => 'water' %>
       <%- end -%>
     </td>
     <td>
       <%= form_for Drink.new(:person => person, :amount => 16) do |f| %>
         <%= f.hidden_field :person_id %>
         <%= f.hidden_field :amount %>
-        <%= submit_tag "16 oz." %>
+        <%= submit_tag "16 oz.", :class => 'water' %>
       <%- end -%>
     </td>
   </tr>

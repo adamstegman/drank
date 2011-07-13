@@ -38,8 +38,6 @@ th, td {
 
 /* Header */
 h1 {
-  background: #000;
-  color: #fff;
   font-size: 3em;
   font-weight: bold;
   line-height: 2em;
@@ -53,4 +51,23 @@ h1 span {
 h1 span a {
   color: #fff;
   text-decoration: none;
+}
+
+/* Buttons */
+input {
+  -webkit-appearance: none;
+  font-size: 14px;
+  font-weight: bold;
+  height: 44px;
+  line-height: 44px;
+}
+@media screen and (min-width: 660px) {
+  input {
+    font-size: 1.25em;
+  }
+}
+
+.water {
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.2, #36e), color-stop(0.6, #69f));
+  color: #eee;
 }

@@ -6,14 +6,13 @@
   <%= csrf_meta_tag %>
   <meta name="viewport" content="width=device-width" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/images/icon.gif" />
   <%= stylesheet_link_tag "application" %>
   <%= javascript_include_tag "application" %>
 </head>
 <body>
-  <h1><span class="centered"><%= link_to "Water Wars", root_path -%></span></h1>
+  <h1 class="water"><span class="centered"><%= link_to "Water Wars", root_path -%></span></h1>
   <div class="content centered">
     <%= yield %>
   </div>
