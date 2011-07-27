@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :ensure_domain
 
-  APP_DOMAIN = 'drank.adamstegman.com'
+  APP_DOMAIN = 'water-wars.adamstegman.com'
 
   def ensure_domain
     if request.env['HTTP_HOST'] != APP_DOMAIN
