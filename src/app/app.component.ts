@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
 
-import { Drinker } from './drinker';
 import { DrinkerService } from './drinker.service';
 
 @Component({
@@ -10,17 +8,6 @@ import { DrinkerService } from './drinker.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Water Wars';
-  drinkers: Drinker[];
-
-  constructor(private drinkerService: DrinkerService) { }
-
-  getDrinkers(): void {
-    this.drinkerService.getDrinkers().then(drinkers => this.drinkers = drinkers);
-  }
-
-  ngOnInit(): void {
-    this.getDrinkers();
-  }
 }
