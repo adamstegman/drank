@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { Drinker } from './drinker';
 
-export class Drinker {
-  id: number;
-  name: string;
-  drank: number;
-}
+const DRINKERS: Drinker[] = [
+  new Drinker(1, "Aubrey"),
+  new Drinker(2, "Adam"),
+];
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,5 @@ export class Drinker {
 })
 export class AppComponent {
   title = 'Water Wars';
-  drinkers: Drinker[] = [
-    {id: 1, name: "Aubrey", drank: 0},
-    {id: 2, name: "Adam", drank: 0},
-  ];
+  drinkers: Drinker[] = DRINKERS;
 }

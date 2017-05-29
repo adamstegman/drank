@@ -11,7 +11,7 @@
   <tr *ngFor="let drinker of drinkers">
     <td>{{drinker.name}}</td>
     <td>{{drinker.drank | floor}} oz.</td>
-    <td></td>
-    <td></td>
+    <td><button (click)="drinker.addDrink(8)">8 oz.</button></td>
+    <td><button (click)="drinker.addDrink(16)">16 oz.</button></td>
   </tr>
 </table>
