@@ -1,3 +1,17 @@
 <h1>
   {{title}}
 </h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Drank</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr *ngFor="let drinker of drinkers">
+    <td>{{drinker.name}}</td>
+    <td>{{drinker.drank | floor}} oz.</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
