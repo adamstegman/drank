@@ -1,12 +1,12 @@
 export class Drinker {
-  id: number;
+  $key: string;
   name: string;
   drank: number;
 
-  constructor(id: number, name: string) {
-    this.id = id;
+  constructor($key: string, name: string, drank: number) {
+    this.$key = $key;
     this.name = name;
-    this.drank = 0;
+    this.drank = drank;
   }
 
   public addDrink(amount: number): void {

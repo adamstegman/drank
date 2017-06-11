@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+
 import { Drinker } from './drinker';
-import { DrinkerService } from './drinker.service';
 
 @Component({
   selector: 'drinkers',
   templateUrl: './drinkers.component.html',
   styleUrls: ['./drinkers.component.css']
 })
-export class DrinkersComponent implements OnInit {
-  drinkers: Drinker[];
+export class DrinkersComponent {
+  drinkers: FirebaseListObservable<any[]>;
 
-  constructor(private drinkerService: DrinkerService) { }
-
-  getDrinkers(): void {
-    this.drinkerService.getDrinkers().then(drinkers => this.drinkers = drinkers);
+  constructor(private db: AngularFireDatabase) {
+    this.drinkers = db.list('/drinkers');
   }
 
-  ngOnInit(): void {
-    this.getDrinkers();
+  addDrink(drinker: Drinker, drank: number): void {
+    drinker.drank += drank;
+    this.drinkers.update(drinker.$key, drinker);
   }
 }

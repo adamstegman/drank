@@ -5,10 +5,10 @@
     <th></th>
     <th></th>
   </tr>
-  <tr *ngFor="let drinker of drinkers">
+  <tr *ngFor="let drinker of drinkers | async">
     <td>{{drinker.name}}</td>
     <td>{{drinker.drank | floor}} oz.</td>
-    <td><button (click)="drinker.addDrink(8)">8 oz.</button></td>
-    <td><button (click)="drinker.addDrink(16)">16 oz.</button></td>
+    <td><button (click)="addDrink(drinker, 8)">8 oz.</button></td>
+    <td><button (click)="addDrink(drinker, 16)">16 oz.</button></td>
   </tr>
 </table>
