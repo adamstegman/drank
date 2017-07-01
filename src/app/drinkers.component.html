@@ -7,7 +7,7 @@
   </tr>
   <tr *ngFor="let drinker of drinkers | async">
     <td>{{drinker.name}}</td>
-    <td>{{drinker.drank | floor}} oz.</td>
+    <td>{{getDrank(drinker) | async | floor}} oz.</td>
     <td><button (click)="addDrink(drinker, 8)">8 oz.</button></td>
     <td><button (click)="addDrink(drinker, 16)">16 oz.</button></td>
   </tr>
