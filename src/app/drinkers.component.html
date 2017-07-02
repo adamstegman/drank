@@ -12,3 +12,9 @@
     <td><button (click)="addDrink(drinker, 16)">16 oz.</button></td>
   </tr>
 </table>
+<nav>
+  <ul>
+    <li><a [routerLink]="['/']" [queryParams]="{startAt: '', endAt: ''}">Today's drinks</a></li>
+    <li><a [routerLink]="['/']" [queryParams]="{startAt: beginningOfWeekTimestamp(), endAt: ''}">This week's drinks</a></li>
+  </ul>
+</nav>

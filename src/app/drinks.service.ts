@@ -13,6 +13,8 @@ import { Drink } from './drink';
 export class DrinksService {
   startDrinksAtTimestamp: BehaviorSubject<string>;
   endDrinksAtTimestamp: BehaviorSubject<string>;
+  startDrinksAtTimestampCallback: any;
+  endDrinksAtTimestampCallback: any;
   drinks: FirebaseListObservable<Drink[]>;
 
   constructor(private db: AngularFireDatabase) {
@@ -26,7 +28,8 @@ export class DrinksService {
       }
     });
 
-    this.updateDrinkTimestamps();
+    this.updateStartDrinksAtTimestamp();
+    this.updateEndDrinksAtTimestamp();
   }
 
   addDrink(drinker: Drinker, drank: number): void {
@@ -43,13 +46,34 @@ export class DrinksService {
       map(drinks => drinks.reduce((acc, drink) => acc + drink.amount, 0));
   }
 
-  updateDrinkTimestamps(): void {
+  setDrinkTimestamps(startAt: string, endAt: string): void {
+    clearTimeout(this.startDrinksAtTimestampCallback);
+    clearTimeout(this.endDrinksAtTimestampCallback);
+    if (startAt && endAt) {
+      this.startDrinksAtTimestamp.next(startAt);
+      this.endDrinksAtTimestamp.next(endAt);
+    } else if (startAt) {
+      this.startDrinksAtTimestamp.next(startAt);
+      this.updateEndDrinksAtTimestamp();
+    } else {
+      this.updateStartDrinksAtTimestamp();
+      this.updateEndDrinksAtTimestamp();
+    }
+  }
+
+  updateStartDrinksAtTimestamp(): void {
     const beginningOfDay = moment().startOf('day');
     this.startDrinksAtTimestamp.next(beginningOfDay.clone().utc().toJSON());
-    const endOfDay = beginningOfDay.clone().endOf('day');
-    this.endDrinksAtTimestamp.next(endOfDay.clone().utc().toJSON());
 
     const msUntilTomorrow = beginningOfDay.clone().add(1, 'day').diff(moment.now());
-    setTimeout(this.updateDrinkTimestamps.bind(this), msUntilTomorrow);
+    this.startDrinksAtTimestampCallback = setTimeout(this.updateStartDrinksAtTimestamp.bind(this), msUntilTomorrow);
+  };
+
+  updateEndDrinksAtTimestamp(): void {
+    const endOfDay = moment().endOf('day');
+    this.endDrinksAtTimestamp.next(endOfDay.clone().utc().toJSON());
+
+    const msUntilTomorrow = endOfDay.clone().startOf('day').add(1, 'day').diff(moment.now());
+    this.endDrinksAtTimestampCallback = setTimeout(this.updateEndDrinksAtTimestamp.bind(this), msUntilTomorrow);
   };
 }
